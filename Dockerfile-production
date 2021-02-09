@@ -1,0 +1,22 @@
+# Dockerfile References: https://docs.docker.com/engine/reference/builder/
+FROM golang:1.15 as builder
+RUN mkdir /app
+ADD . /app
+WORKDIR /app
+COPY ./ ./
+
+# download dependencies + launch tests
+RUN go mod download
+RUN go test ./...
+RUN CGO_ENABLED=0 go build -a -ldflags '-extldflags "-static"' -o fizzbuzzServer ./cmd/server
+
+# useless for this project but just in case
+FROM alpine:latest as certs
+RUN apk --update add ca-certificates
+
+FROM scratch
+WORKDIR /root/
+COPY --from=certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
+COPY --from=builder /app/fizzbuzzServer /root/
+EXPOSE 8080
+CMD ["./fizzbuzzServer"]
