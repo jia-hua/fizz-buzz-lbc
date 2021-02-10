@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 	"github.com/jia-hua/fizz-buzz-lbc/pkg/fizzbuzz"
+	log "github.com/sirupsen/logrus"
 )
 
 // ComputeFizzBuzzRequest represents the computeFizzBuzz use case parameters
@@ -23,6 +24,7 @@ type ComputeFizzBuzzResponse string
 func ComputeFizzBuzzHandler(request ComputeFizzBuzzRequest) (ComputeFizzBuzzResponse, error) {
 	validate := validator.New()
 	if err := validate.Struct(&request); err != nil {
+		log.Error("invalid value: ", err)
 		return "", err
 	}
 

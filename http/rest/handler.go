@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/jia-hua/fizz-buzz-lbc/internal/metrics"
 	fizzbuzzUseCase "github.com/jia-hua/fizz-buzz-lbc/useCase"
@@ -26,6 +27,7 @@ func computeFizzBuzzHandler(metricsService metrics.Service) func(c *gin.Context)
 		var request fizzbuzzUseCase.ComputeFizzBuzzRequest
 
 		if err := c.ShouldBindQuery(&request); err != err {
+			log.Error("invalid request: ", err)
 			c.JSON(http.StatusBadRequest, gin.H{"invalid format error": err})
 			c.Abort()
 			return
