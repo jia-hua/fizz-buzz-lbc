@@ -1,0 +1,47 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Fizzbuzz service
+  description: "Fizzbuzz service"
+servers:
+  - url: "http://localhost:8080"
+paths:
+  "/fizzbuzz":
+    get:
+      tags:
+        - "Compute a fizzbuzz sequence (to a limit) given 2 numbers with their string substitution"
+      operationId: computeFizzBuzz
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: number
+          required: true
+        - in: query
+          name: fizzNumber
+          schema:
+            type: number
+          required: true
+        - in: query
+          name: fizzString
+          schema:
+            type: string
+          required: true
+        - in: query
+          name: buzzNumber
+          schema:
+            type: number
+          required: true
+        - in: query
+          name: buzzString
+          schema:
+            type: string
+          required: true
+      responses:
+        "200":
+          description: Ok
+          content:
+            text/plain:
+              schema:
+                type: string
+ 

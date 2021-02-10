@@ -1,0 +1,20 @@
+@startuml
+    actor client
+    participant "controller"
+    participant "use case" as useCase
+    participant "service"
+    
+    client -> controller: GET /fizzbuzz
+    activate controller
+    controller -> useCase
+    activate useCase
+    useCase -> service
+    activate service
+    
+    service --> useCase
+    deactivate service
+    useCase --> controller
+    deactivate useCase
+    controller --> client
+    deactivate controller
+@enduml
